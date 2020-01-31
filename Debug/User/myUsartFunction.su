@@ -1,0 +1,2 @@
+myUsartFunction.c:25:5:_write	16	static
+myUsartFunction.c:60:6:HAL_UART_TxCpltCallback	12	static

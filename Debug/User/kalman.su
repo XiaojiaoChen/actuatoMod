@@ -1,0 +1,6 @@
+kalman.c:10:13:kalman_StoreMeasure	0	static
+kalman.c:16:6:kalman_setQ	24	static
+kalman.c:27:6:kalman_setR	0	static
+kalman.c:109:13:kalman_step	48	static
+kalman.c:32:17:KALMANFILTER	48	static
+kalman.c:140:7:stepKF	8	static
