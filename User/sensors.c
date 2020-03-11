@@ -29,11 +29,11 @@ struct SENSORDATA sensorData;
 struct SENSORDATA sensorDataRx;
 
 struct CANBUS_HANDLE canbus;
-struct CANBUS_HANDLE *canbusPointer=&canbus;
+struct CANBUS_HANDLE *ptcanbus=&canbus;
 
 uint8_t PressureBuffer[2];
 int16_t pressureRaw;
-
+uint32_t pressureGlobal;
 
 int16_t imuOriData[4];
 int16_t imuGetData[4];
@@ -63,14 +63,15 @@ void readSensors()
  	ret[0]=readPressure();
 
 	ret[1]=readIMU();
-
+//
 	ret[2]=readLaser(&laserDis);
 	sensorData.distance=laserDis;
 
 
-	if(ret[0]||ret[1]||ret[2])
-		HAL_I2C_ErrorCallback(&hi2c2);
-
+//	if(ret[0]||ret[1]||ret[2])
+//	{
+//		HAL_I2C_ErrorCallback(&hi2c2);
+//	}
 }
 
 
@@ -79,8 +80,9 @@ void readSensors()
 uint8_t readPressure()
 {
 	uint8_t ret;
-	if((ret=HAL_I2C_Master_Receive(&hi2c2, PRESSUREI2CADDRESS, PressureBuffer, 2,1)==HAL_OK)){
+	if((ret=HAL_I2C_Master_Receive(&hi2c2, PRESSUREI2CADDRESS, PressureBuffer, 2,1))==HAL_OK){
 		pressureRaw = (int16_t) (((PressureBuffer[0]<<8) | PressureBuffer[1])&0x3FFF);
+
 		sensorData.pressure=(int)((pressureRaw-1638)*0.0000762951f*400);
 	}
 	else
@@ -229,8 +231,6 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
   }
   canRead();
 
-  canbus.TxData		   =(uint8_t *)(&sensorData);
-  canbusPointer->TxData=(uint8_t *)(&sensorData);
 }
 
 

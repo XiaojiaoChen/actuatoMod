@@ -144,13 +144,7 @@ void sensorTaskFunc(void const * argument)
 		for(;;)
 		{
 			readSensors();
-//			int32_t c1=HAL_GetTick();
-//		    readPressure();
-//		    int32_t c2=HAL_GetTick();
-//			readIMU();
-//		    int32_t c3=HAL_GetTick();
-//			readLaser();
-//		    int32_t c4=HAL_GetTick();
+
 			canSend();
 //			int32_t c5=HAL_GetTick();
 
@@ -181,17 +175,21 @@ void sendTaskFunc(void const * argument)
 	  /* Infinite loop */
 		for(;;)
 		{
+
+		  unpackQuaternion(&(sensorData.quaternionCom), (struct QUATERNION*)imuOriData);
 	      printf("Time:%d ms, CanID:%x,  Pressure: %d KPa, Distance: %d mm, Quaternion: %1.5f %1.5f %1.5f %1.5f\r\n",
 	    		  HAL_GetTick(),
 	    		  (uint16_t)(canbus.TxHeader.StdId),
-				  laserDis,
-				  sensorDataRx.distance,
-				  imuGetData[0]*3.051757e-5,
-				  imuGetData[1]*3.051757e-5,
-				  imuGetData[2]*3.051757e-5,
-				  imuGetData[3]*3.051757e-5
+				  sensorData.pressure,
+				  sensorData.distance,
+				  imuOriData[0]*3.051757e-5,
+				  imuOriData[1]*3.051757e-5,
+				  imuOriData[2]*3.051757e-5,
+				  imuOriData[3]*3.051757e-5
 				  );
 
+
+	//
 	//      printf("%d %d %d %d\r\n",
 	// 			  (int)((round)(RangeData.range_mm*100)),
 	//			  sensorData.distance,

@@ -77,7 +77,6 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
-  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -109,15 +108,13 @@ int main(void)
   canConfig();
 
   /* USER CODE END 2 */
- 
+
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init(); 
- 
   /* Start scheduler */
   osKernelStart();
  
   /* We should never get here as control is now taken by the scheduler */
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
