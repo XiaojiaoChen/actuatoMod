@@ -8,6 +8,7 @@
 
 #include "main.h"
 #include "sensors.h"
+#include "messages.h"
 #include "stdio.h"
 #include "kalman.h"
 #include "stdlib.h"
@@ -83,7 +84,12 @@ uint8_t readPressure()
 	if((ret=HAL_I2C_Master_Receive(&hi2c2, PRESSUREI2CADDRESS, PressureBuffer, 2,1))==HAL_OK){
 		pressureRaw = (int16_t) (((PressureBuffer[0]<<8) | PressureBuffer[1])&0x3FFF);
 
-		sensorData.pressure=(int)((pressureRaw-1638)*0.0000762951f*400);
+#if COMPACT_VERSION_PRESSURE_HPA == 1
+	sensorData.pressure=(((uint32_t)((pressureRaw-1638)*30.51804f))>>20); //30.51804f=0.0000762951f*400000
+#else
+	sensorData.pressure=(uint16_t)((pressureRaw-1638)*0.0000762951f*400);
+#endif
+
 	}
 	else
 	{
@@ -136,14 +142,19 @@ uint8_t readLaser(uint16_t *buf){
 
 	sensorData.distance=*buf;
 
+	/***Pack laser Data***/
+#if COMPACT_VERSION_PRESSURE_HPA == 1
+	sensorData.distance=(*buf)>>3;
+	sensorData.quaternionCom.distanceBit2=(uint8_t)((*buf)>>2)&0x0001;
+	sensorData.quaternionCom.distanceBit1=(uint8_t)((*buf)>>1)&0x0001;
+	sensorData.quaternionCom.distanceBit0=(uint8_t)(*buf)&0x0001;
+#else
+	sensorData.distance=*buf;
+#endif
+
 	laserStartSingleShot();
 	return ret;
 }
-
-
-
-
-
 
 
 

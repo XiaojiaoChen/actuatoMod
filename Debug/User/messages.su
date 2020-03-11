@@ -1,0 +1,2 @@
+messages.c:19:6:packQuaternion	16	static
+messages.c:51:6:unpackQuaternion	20	static

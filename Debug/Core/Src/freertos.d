@@ -52,7 +52,8 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_cfg.h \
  c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_types.h \
  ../Core/Inc/can.h ../Core/Inc/main.h \
- C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/IMU_WT902.h
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/IMU_WT902.h \
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/messages.h
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 
@@ -165,3 +166,5 @@ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actu
 ../Core/Inc/main.h:
 
 C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/IMU_WT902.h:
+
+C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/messages.h:

@@ -317,5 +317,6 @@
 "User/Wire.o"
 "User/kalman.o"
 "User/laser.o"
+"User/messages.o"
 "User/myUsartFunction.o"
 "User/sensors.o"

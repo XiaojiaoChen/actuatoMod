@@ -15,11 +15,8 @@
 #include "laser.h"
 #include "can.h"
 #include "IMU_WT902.h"
+#include "messages.h"
 
- struct SENSORDATA{
- uint16_t pressure:9, distance:7;
- struct QUATERNIONCOMPACT quaternionCom;
- };
 
  struct CANBUS_HANDLE{
 	CAN_HandleTypeDef     CanHandle;

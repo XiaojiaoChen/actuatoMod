@@ -54,7 +54,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_def.h \
  c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_cfg.h \
  c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_types.h \
- C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/IMU_WT902.h
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/IMU_WT902.h \
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/messages.h
 
 ../Core/Inc/main.h:
 
@@ -179,3 +180,5 @@ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actu
 c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_types.h:
 
 C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/IMU_WT902.h:
+
+C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/messages.h:

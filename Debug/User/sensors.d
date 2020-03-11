@@ -33,7 +33,7 @@ User/sensors.o: ../User/sensors.c ../Core/Inc/main.h \
  c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_cfg.h \
  c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_types.h \
  ../Core/Inc/can.h ../Core/Inc/main.h ../User/IMU_WT902.h \
- ../User/kalman.h \
+ ../User/messages.h ../User/kalman.h \
  C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/Drivers/CMSIS/DSP/arm_math.h \
  ../Core/Inc/i2c.h
 
@@ -112,6 +112,8 @@ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actu
 ../Core/Inc/main.h:
 
 ../User/IMU_WT902.h:
+
+../User/messages.h:
 
 ../User/kalman.h:
 

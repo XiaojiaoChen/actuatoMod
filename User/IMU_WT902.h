@@ -12,6 +12,7 @@
  extern "C" {
 #endif
 
+#include "messages.h"
 
 #define IMU_WT902_SAVE 			0x00
 #define IMU_WT902_CALSW 		0x01
@@ -92,32 +93,9 @@
 #define IMU_I2C_ADDRESS         ((uint8_t)(0x50<<1))
 #define LH2UINT16(x,y) ((uint16_t)((uint16_t)(x)|(uint16_t)((y)<<8)))
 
-
-struct QUATERNION{
- /*unCompressed Quaternion*/
- uint16_t imuData0;
- uint16_t imuData1;
- uint16_t imuData2;
- uint16_t imuData3;
-};
-
- struct QUATERNIONCOMPACT{
-	 /*Compressed Quaternion by omitting the largest component.
-	  * Other component limited to 15bit:
-	  * maxLocHigh and maxLocLow specify which location is the max component(omitted one) (default:q=w+xi+yj+zk)
-	  * maxSign is not necessarily needed, for simplicity we added it.
-	  */
-	 uint16_t imuData0:14,maxLocHigh:1,distanceBit2:1;
-	 uint16_t imuData1:14,maxLocLow:1,distanceBit1:1;
-	 uint16_t imuData2:14,maxSign:1,distanceBit0:1;
- };
-
-
 uint8_t IMU_Init();
 uint8_t readIMU_Quaternions(struct QUATERNION *);
 uint8_t readIMU_QuaternionsPacked(struct QUATERNIONCOMPACT *);
-void packQuaternion(struct QUATERNION *qOri,struct QUATERNIONCOMPACT *qCom);
-void unpackQuaternion(struct QUATERNIONCOMPACT *qCom,struct QUATERNION *qOri);
 
 #ifdef __cplusplus
 }
