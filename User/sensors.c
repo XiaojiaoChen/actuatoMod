@@ -20,7 +20,7 @@
 #endif
 
 
-#define CANBUS_ID 	0
+#define CANBUS_ID 	2
 
 
 #define PRESSUREI2CADDRESS    ((uint8_t)(0x28<<1))

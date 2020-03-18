@@ -16,7 +16,7 @@ extern "C" {
 
 /*If this value is 1, the pressure is encoded by 12 bit, with unit hPa. The quaternion is encoded by 14 bit for each component.
  *If this value is 0, the pressure is encoded by 9 bit, with unit KPa. The quaternion is encoded by 15 bit for each component.*/
-#define COMPACT_VERSION_PRESSURE_HPA  1
+#define COMPACT_VERSION_PRESSURE_HPA  0
 
 
 struct QUATERNION{
