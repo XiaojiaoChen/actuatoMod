@@ -158,6 +158,9 @@ uint8_t readLaser(uint16_t *buf){
 
 
 
+static void canStandBy(uint8_t canstand){
+	HAL_GPIO_WritePin(D3_GPIO_Port,D3_Pin, canstand);
+}
 
 
 /***************************     Can bus        ***************************/
@@ -168,6 +171,9 @@ uint8_t readLaser(uint16_t *buf){
 /**************************************************************************/
 /**************************************************************************/
 void canConfig(){
+
+	canStandBy(0);
+
 	canbus.CanHandle=hcan;
 	CAN_FilterTypeDef  sFilterConfig;
 	/*##-2- Configure the CAN Filter ###########################################*/

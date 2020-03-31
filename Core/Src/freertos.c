@@ -175,7 +175,7 @@ void sendTaskFunc(void const * argument)
 	  /* Infinite loop */
 		for(;;)
 		{
-
+		  unpackQuaternion(&(sensorDataRx.quaternionCom), (struct QUATERNION*)imuGetData);
 		  unpackQuaternion(&(sensorData.quaternionCom), (struct QUATERNION*)imuOriData);
 	      printf("Time:%d ms, CanID:%x,  Pressure: %d KPa, Distance: %d mm, Quaternion: %1.5f %1.5f %1.5f %1.5f\r\n",
 	    		  HAL_GetTick(),
@@ -184,7 +184,7 @@ void sendTaskFunc(void const * argument)
 				  sensorData.distance,
 				  imuOriData[0]*3.051757e-5,
 				  imuOriData[1]*3.051757e-5,
-				  imuOriData[2]*3.051757e-5,
+				  imuGetData[1]*3.051757e-5,
 				  imuOriData[3]*3.051757e-5
 				  );
 
