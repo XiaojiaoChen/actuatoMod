@@ -19,12 +19,11 @@
 volatile int IntrFired=0;
 static int32_t lastResponseTime = 0;
 static float filteredrangeFloat=0;
-static uint16_t filteredrangeInt=0;
+//static uint16_t filteredrangeInt=0;
 
 VL6180x_RangeData_t RangeData;
 static VL6180xDev_t theVL6180xDev;
 static KALMAN_FILTER *ptLaserKalman;
-
 
 
 /***************************     VL6180x Laser Sensor ********************/
@@ -32,14 +31,17 @@ static KALMAN_FILTER *ptLaserKalman;
 
 void initLaserPoll() {
 //	arm_fir_init_f32(&S, NUM_TAPS, (float32_t *)&firCoeffs32[0], &firStateF32[0], BLOCK_SIZE);
+
 	ptLaserKalman = KALMANFILTER(400, 12, 0.02);
+	//ptLaserKalman = KALMANFILTER(pQ_set, pR_set, dt_set);
+
 	theVL6180xDev = LASERI2CADDRESS;
 	HAL_GPIO_WritePin(LASER_D1_GPIO_Port, LASER_D1_Pin, 0);
 	HAL_Delay(7);
 	HAL_GPIO_WritePin(LASER_D1_GPIO_Port, LASER_D1_Pin, 1);
 	HAL_Delay(7);
 	VL6180x_InitData(theVL6180xDev);
-	VL6180x_FilterSetState(theVL6180xDev, 0); //disable filering as not effective in continuous mode
+	VL6180x_FilterSetState(theVL6180xDev, 0); //disable filtering as not effective in continuous mode
 	VL6180x_Prepare(theVL6180xDev);     // default vl6180x init
 	VL6180x_SetupGPIO1(theVL6180xDev, CONFIG_GPIO_INTERRUPT_DISABLED,
 			INTR_POL_HIGH);
@@ -64,8 +66,8 @@ uint8_t laserTryRead(uint16_t *buf) {
 		//    If Range.errorStatus is DataNotReady, application knows that it has to wait a bit before getting a new data
 		//    If Range.errorStatus is 0, application knows it is a valid distance
 		//    If Range.errorStatus is not 0, application knows that reported distance is invalid so may take some decisions depending on the errorStatus
-//		if (RangeData.errorStatus == DataNotReady)
-//			continue;
+		if (RangeData.errorStatus == DataNotReady)
+			return ret;
 		if (RangeData.errorStatus == 0) {
 			//Option 1:Original Low pass, nearly same effect as the kalman filter
 //			int  LaserAlpha=0.83*(1<<16);
@@ -84,8 +86,9 @@ uint8_t laserTryRead(uint16_t *buf) {
 		VL6180x_RangeClearInterrupt(theVL6180xDev);
 	}
 	else {
-		printf("Error:%s\r\n",VL6180x_RangeGetStatusErrString(RangeData.errorStatus)); // your code display error code
-		initLaserPoll();
+		printf("LaserErr i2c err"); // your code display error code
+
+				initLaserPoll();
 	}
 	return ret;
 }
@@ -94,6 +97,8 @@ uint8_t laserTryRead(uint16_t *buf) {
 
 void initLaserInt() {
 	ptLaserKalman = KALMANFILTER(400, 12, 0.02);
+	//ptLaserKalman = KALMANFILTER(pQ_set, pR_set, dt_set);
+
 	theVL6180xDev = LASERI2CADDRESS;
 	HAL_GPIO_WritePin(LASER_D1_GPIO_Port, LASER_D1_Pin, 0);
 	HAL_Delay(7);

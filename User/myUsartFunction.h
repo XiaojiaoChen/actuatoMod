@@ -15,11 +15,11 @@
 
 #include "stm32f1xx_hal.h"
 #include "stdio.h"
-#define UART_TX_BUF_SIZE 150
+#define UART_TX_BUF_SIZE 150 //150->120
 #define UART_RX_BUF_SIZE 30
 #define COMMAND_SIZE 20
 
-#define UART_TX_BUF_NUM 5
+#define UART_TX_BUF_NUM 10 //5->10
 
 
 typedef struct UART_DEVICE_STRUCT{

@@ -32,6 +32,7 @@ extern volatile int IntrFired;
 
 extern VL6180x_RangeData_t RangeData;
 
+/*********************KALMAN_FILTER parameters set***********************/
 
 
 #ifdef __cplusplus

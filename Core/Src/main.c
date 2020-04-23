@@ -91,7 +91,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  HAL_Delay(2000);// to solve i2c issue 300->3000
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -104,6 +104,7 @@ int main(void)
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start(&htim2);
+  HAL_Delay(2000);// to solve i2c issue 300->3000
   HAL_I2C_ErrorCallback(&hi2c2);
   canConfig();
 
