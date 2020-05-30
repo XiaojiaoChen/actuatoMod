@@ -324,6 +324,30 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c) {
 			wait_for_gpio_state_timeout_us(GPIOB, SDA_PIN, GPIO_PIN_SET,
 					timeout);
 
+			//3.5 still busy, may be the slave blocking. send 9 clocks and a stop.
+			if(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_RESET){
+				//repeat three times.
+				for(int i=0;i<3;i++){
+					uint8_t clockBit=0;
+					while(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_RESET && clockBit<9){
+						HAL_GPIO_WritePin(GPIOB, SCL_PIN, GPIO_PIN_RESET);
+						delay_us(500);
+						HAL_GPIO_WritePin(GPIOB, SCL_PIN, GPIO_PIN_SET);
+						delay_us(500);
+						clockBit++;
+					}
+					//generate a stop
+					HAL_GPIO_WritePin(GPIOB, SDA_PIN, GPIO_PIN_SET);
+					wait_for_gpio_state_timeout_us(GPIOB, SCL_PIN, GPIO_PIN_SET,
+										timeout);
+
+					//If successful then break the loop
+					if(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_SET)
+						break;
+				}
+			}
+			//I2c internal problem
+
 			// 4. Configure the SDA I/O as General Purpose Output Open-Drain, Low level (Write 0 to GPIOx_ODR).
 			HAL_GPIO_WritePin(GPIOB, SDA_PIN, GPIO_PIN_RESET);
 
@@ -372,6 +396,7 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c) {
 
 			// Call initialization function.
 			MX_I2C2_Init();
+
 
 			printf("I2c recovered\r\n");
 		}

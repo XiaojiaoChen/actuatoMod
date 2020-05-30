@@ -170,7 +170,6 @@ void sendTaskFunc(void const * argument)
 	 extern float firrange;*/
 	 uint16_t senDis=0;
 	 extern int sensorRet[];
-	 extern int sensorChances[];
 	/* Infinite loop */
 	for (;;) {
 	//	unpackQuaternion(&(sensorDataRx.quaternionCom), (QUATERNION*) imuGetData);
@@ -183,12 +182,7 @@ void sendTaskFunc(void const * argument)
 #else
 		senDis=sensorData.distance;
 #endif
-		for(int i=0;i<3;i++)
-			{
-				if(sensorRet[i]!=HAL_OK){
-					printf("I2c Err on sensor %d, remaining %d recoveries\r\n",i,sensorChances[i]);
-				}
-			}
+
 		if (RangeData.errorStatus)
 			printf("Laser err:%s\r\n", VL6180x_RangeGetStatusErrString(RangeData.errorStatus)); // your code display error code
 		printf("Time:%lu ms, CanID:%d,  Pressure: %d HPa, Distance: %d mm, Quaternion: %1.5f %1.5f %1.5f %1.5f, Active:%d %d %d, LoopTime:%ld\r\n",
@@ -200,9 +194,9 @@ void sendTaskFunc(void const * argument)
 				imuOriData[1] * 3.051757e-5,
 				imuOriData[2] * 3.051757e-5,
 				imuOriData[3] * 3.051757e-5,
-				(sensorChances[0]>0),
-				(sensorChances[1]>0),
-				(sensorChances[2]>0),
+				(sensorRet[0]==HAL_OK),
+				(sensorRet[1]==HAL_OK),
+				(sensorRet[2]==HAL_OK),
 				c2 - c1);
 
 		//      printf("%d %d %d %d\r\n",
