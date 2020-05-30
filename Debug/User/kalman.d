@@ -27,7 +27,7 @@ User/kalman.o: ../User/kalman.c ../User/kalman.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
  ../Core/Inc/main.h \
- C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/Drivers/CMSIS/DSP/arm_math.h
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/Drivers/CMSIS/DSP/arm_math.h
 
 ../User/kalman.h:
 
@@ -87,4 +87,4 @@ User/kalman.o: ../User/kalman.c ../User/kalman.h \
 
 ../Core/Inc/main.h:
 
-C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/Drivers/CMSIS/DSP/arm_math.h:
+C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/Drivers/CMSIS/DSP/arm_math.h:

@@ -20,16 +20,14 @@
 static uint8_t IMUWriteBuffer[3];
 static uint8_t IMUReadBuffer[8];
 
-static struct QUATERNION quaternionOriginal;
+static QUATERNION quaternionOriginal;
 
 static uint8_t IMU_WriteReg(uint8_t regAdd,uint16_t val){
 	int ret=0;
 	IMUWriteBuffer[0]=regAdd;
 	IMUWriteBuffer[1]=(uint8_t)(val&0x00FF);
 	IMUWriteBuffer[2]=(uint8_t)(val>>8);
-	if ((ret=HAL_I2C_Master_Transmit(&hi2c2,IMU_I2C_ADDRESS,IMUWriteBuffer,3,1))!=HAL_OK){
-		printf("IMU Write Reg %d , Error Code=%d\r\n",regAdd,ret);
-	}
+	ret=HAL_I2C_Master_Transmit(&hi2c2,IMU_I2C_ADDRESS,IMUWriteBuffer,3,1);
 	return ret;
 }
 static uint8_t IMU_ReadReg(uint8_t regAdd,uint16_t *readBuf,uint16_t regNum){
@@ -43,19 +41,18 @@ static uint8_t IMU_ReadReg(uint8_t regAdd,uint16_t *readBuf,uint16_t regNum){
 			readBuf[i]=LH2UINT16(IMUReadBuffer[2*i],IMUReadBuffer[2*i+1]);
 		}
 	}
-	else
-		printf("IMU Read Reg %d , Error Code=%d\r\n",regAdd,ret);
+
 	return ret;
 }
 
 
 
-uint8_t readIMU_Quaternions(struct QUATERNION *quaternionBuf)
+uint8_t readIMU_Quaternions(QUATERNION *quaternionBuf)
 {
 	return IMU_ReadReg(IMU_WT902_Quaternion_Q0,(uint16_t *)quaternionBuf->imuData,4);
 }
 
-uint8_t readIMU_QuaternionsPacked( struct QUATERNIONCOMPACT *quaternionPactBuf)
+uint8_t readIMU_QuaternionsPacked(QUATERNIONCOMPACT *quaternionPactBuf)
 {
 	uint8_t ret;
 	if((ret=readIMU_Quaternions(&quaternionOriginal))==HAL_OK)

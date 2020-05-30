@@ -1,1 +1,1 @@
-arm_conv_partial_opt_q7.c:64:12:arm_conv_partial_opt_q7	136	static,ignoring_inline_asm
+arm_conv_partial_opt_q7.c:64:12:arm_conv_partial_opt_q7	280	static,ignoring_inline_asm

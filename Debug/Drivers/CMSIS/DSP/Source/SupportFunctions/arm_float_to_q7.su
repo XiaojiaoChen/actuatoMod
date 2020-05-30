@@ -1,1 +1,1 @@
-arm_float_to_q7.c:63:6:arm_float_to_q7	24	static,ignoring_inline_asm
+arm_float_to_q7.c:63:6:arm_float_to_q7	40	static,ignoring_inline_asm

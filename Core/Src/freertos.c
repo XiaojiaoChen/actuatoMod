@@ -25,7 +25,7 @@
 #include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
+/* USER CODE BEGIN Includes */     
 #include "myUsartFunction.h"
 #include "sensors.h"
 #include "math.h"
@@ -54,10 +54,10 @@ int32_t c1, c2;
 
 /* USER CODE END Variables */
 osThreadId sensorTaskHandle;
-uint32_t sensorTaskBuffer[1024];
+uint32_t sensorTaskBuffer[ 1024 ];
 osStaticThreadDef_t sensorTaskControlBlock;
 osThreadId sendTaskHandle;
-uint32_t sendTaskBuffer[1024];
+uint32_t sendTaskBuffer[ 1024 ];
 osStaticThreadDef_t sendTaskControlBlock;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -65,13 +65,13 @@ osStaticThreadDef_t sendTaskControlBlock;
 
 /* USER CODE END FunctionPrototypes */
 
-void sensorTaskFunc(void const *argument);
-void sendTaskFunc(void const *argument);
+void sensorTaskFunc(void const * argument);
+void sendTaskFunc(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize);
+void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize );
 
 /* USER CODE BEGIN GET_IDLE_TASK_MEMORY */
 static StaticTask_t xIdleTaskTCBBuffer;
@@ -86,43 +86,43 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackTyp
 /* USER CODE END GET_IDLE_TASK_MEMORY */
 
 /**
- * @brief  FreeRTOS initialization
- * @param  None
- * @retval None
- */
+  * @brief  FreeRTOS initialization
+  * @param  None
+  * @retval None
+  */
 void MX_FREERTOS_Init(void) {
-	/* USER CODE BEGIN Init */
+  /* USER CODE BEGIN Init */
 
-	/* USER CODE END Init */
+  /* USER CODE END Init */
 
-	/* USER CODE BEGIN RTOS_MUTEX */
+  /* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
-	/* USER CODE END RTOS_MUTEX */
+  /* USER CODE END RTOS_MUTEX */
 
-	/* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
 	/* add semaphores, ... */
-	/* USER CODE END RTOS_SEMAPHORES */
+  /* USER CODE END RTOS_SEMAPHORES */
 
-	/* USER CODE BEGIN RTOS_TIMERS */
+  /* USER CODE BEGIN RTOS_TIMERS */
 	/* start timers, add new ones, ... */
-	/* USER CODE END RTOS_TIMERS */
+  /* USER CODE END RTOS_TIMERS */
 
-	/* USER CODE BEGIN RTOS_QUEUES */
+  /* USER CODE BEGIN RTOS_QUEUES */
 	/* add queues, ... */
-	/* USER CODE END RTOS_QUEUES */
+  /* USER CODE END RTOS_QUEUES */
 
-	/* Create the thread(s) */
-	/* definition and creation of sensorTask */
-	osThreadStaticDef(sensorTask, sensorTaskFunc, osPriorityAboveNormal, 0, 1024, sensorTaskBuffer, &sensorTaskControlBlock);
-	sensorTaskHandle = osThreadCreate(osThread(sensorTask), NULL);
+  /* Create the thread(s) */
+  /* definition and creation of sensorTask */
+  osThreadStaticDef(sensorTask, sensorTaskFunc, osPriorityAboveNormal, 0, 1024, sensorTaskBuffer, &sensorTaskControlBlock);
+  sensorTaskHandle = osThreadCreate(osThread(sensorTask), NULL);
 
-	/* definition and creation of sendTask */
-	osThreadStaticDef(sendTask, sendTaskFunc, osPriorityBelowNormal, 0, 1024, sendTaskBuffer, &sendTaskControlBlock);
-	sendTaskHandle = osThreadCreate(osThread(sendTask), NULL);
+  /* definition and creation of sendTask */
+  osThreadStaticDef(sendTask, sendTaskFunc, osPriorityBelowNormal, 0, 1024, sendTaskBuffer, &sendTaskControlBlock);
+  sendTaskHandle = osThreadCreate(osThread(sendTask), NULL);
 
-	/* USER CODE BEGIN RTOS_THREADS */
+  /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
-	/* USER CODE END RTOS_THREADS */
+  /* USER CODE END RTOS_THREADS */
 
 }
 
@@ -133,21 +133,22 @@ void MX_FREERTOS_Init(void) {
  * @retval None
  */
 /* USER CODE END Header_sensorTaskFunc */
-void sensorTaskFunc(void const *argument) {
-	/* USER CODE BEGIN sensorTaskFunc */
+void sensorTaskFunc(void const * argument)
+{
+  /* USER CODE BEGIN sensorTaskFunc */
 	TickType_t xLastWakeTime = xTaskGetTickCount();
 	TickType_t sensorTaskPeriod = pdMS_TO_TICKS(20); //20->100
 
 	/* Infinite loop */
 	for (;;) {
 		c1 = HAL_GetTick();
-		readSensors();
+		tryReadSensors();
 		canSend();
 		c2 = HAL_GetTick();
 
 		vTaskDelayUntil(&xLastWakeTime, sensorTaskPeriod);
 	}
-	/* USER CODE END sensorTaskFunc */
+  /* USER CODE END sensorTaskFunc */
 }
 
 /* USER CODE BEGIN Header_sendTaskFunc */
@@ -157,8 +158,9 @@ void sensorTaskFunc(void const *argument) {
  * @retval None
  */
 /* USER CODE END Header_sendTaskFunc */
-void sendTaskFunc(void const *argument) {
-	/* USER CODE BEGIN sendTaskFunc */
+void sendTaskFunc(void const * argument)
+{
+  /* USER CODE BEGIN sendTaskFunc */
 	TickType_t xLastWakeTime = xTaskGetTickCount();
 	TickType_t sendTaskPeriod = pdMS_TO_TICKS(100); //50->200
 	/*	extern int32_t elapTime;
@@ -166,21 +168,41 @@ void sendTaskFunc(void const *argument) {
 	 extern float filteredrange;
 	 extern float testDistance[];
 	 extern float firrange;*/
+	 uint16_t senDis=0;
+	 extern int sensorRet[];
+	 extern int sensorChances[];
 	/* Infinite loop */
 	for (;;) {
-		unpackQuaternion(&(sensorDataRx.quaternionCom), (struct QUATERNION*) imuGetData);
-		unpackQuaternion(&(sensorData.quaternionCom), (struct QUATERNION*) imuOriData);
+	//	unpackQuaternion(&(sensorDataRx.quaternionCom), (QUATERNION*) imuGetData);
+		unpackQuaternion(&(sensorData.quaternionCom), (QUATERNION*) imuOriData);
+#if COMPACT_VERSION_PRESSURE_HPA == 1
+		senDis= ((uint16_t)((uint16_t)(sensorData.distance)<<3)
+				+(uint16_t)((uint16_t)(sensorData.quaternionCom.distanceBit2)<<2)
+				+(uint16_t)((uint16_t)(sensorData.quaternionCom.distanceBit1)<<1)
+				+(uint16_t)(sensorData.quaternionCom.distanceBit0));
+#else
+		senDis=sensorData.distance;
+#endif
+		for(int i=0;i<3;i++)
+			{
+				if(sensorRet[i]!=HAL_OK){
+					printf("I2c Err on sensor %d, remaining %d recoveries\r\n",i,sensorChances[i]);
+				}
+			}
 		if (RangeData.errorStatus)
 			printf("Laser err:%s\r\n", VL6180x_RangeGetStatusErrString(RangeData.errorStatus)); // your code display error code
-		printf("Time:%lu ms, CanID:%d,  Pressure: %d KPa, Distance: %d mm, Quaternion: %1.5f %1.5f %1.5f %1.5f %ld\r\n",
+		printf("Time:%lu ms, CanID:%d,  Pressure: %d HPa, Distance: %d mm, Quaternion: %1.5f %1.5f %1.5f %1.5f, Active:%d %d %d, LoopTime:%ld\r\n",
 				HAL_GetTick(),
 				(uint16_t) (canbus.TxHeader.StdId),
 				sensorData.pressure,
-				sensorData.distance,
+				senDis,
 				imuOriData[0] * 3.051757e-5,
 				imuOriData[1] * 3.051757e-5,
 				imuOriData[2] * 3.051757e-5,
 				imuOriData[3] * 3.051757e-5,
+				(sensorChances[0]>0),
+				(sensorChances[1]>0),
+				(sensorChances[2]>0),
 				c2 - c1);
 
 		//      printf("%d %d %d %d\r\n",
@@ -191,7 +213,7 @@ void sendTaskFunc(void const *argument) {
 		// 			  );
 		vTaskDelayUntil(&xLastWakeTime, sendTaskPeriod);
 	}
-	/* USER CODE END sendTaskFunc */
+  /* USER CODE END sendTaskFunc */
 }
 
 /* Private application code --------------------------------------------------*/

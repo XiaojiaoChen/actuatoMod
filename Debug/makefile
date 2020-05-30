@@ -54,24 +54,24 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-actuatoMod.elf \
+origarm_actuator.elf \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-actuatoMod.list \
+origarm_actuator.list \
 
 OBJCOPY_BIN += \
-actuatoMod.bin \
+origarm_actuator.bin \
 
 
 # All Target
-all: actuatoMod.elf secondary-outputs
+all: origarm_actuator.elf secondary-outputs
 
 # Tool invocations
-actuatoMod.elf: $(OBJS) $(USER_OBJS) C:\Users\40207\OneDrive\OneDriveDocumentation\STM32CubeIDEWorkSpaceOnedrive\actuatoMod\STM32F103CBTX_FLASH.ld
-	arm-none-eabi-g++ -o "actuatoMod.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\40207\OneDrive\OneDriveDocumentation\STM32CubeIDEWorkSpaceOnedrive\actuatoMod\STM32F103CBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="actuatoMod.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+origarm_actuator.elf: $(OBJS) $(USER_OBJS) C:\Users\40207\OneDrive\OneDriveDocumentation\STM32CubeIDEWorkSpaceOnedrive\origarm_actuator\STM32F103CBTX_FLASH.ld
+	arm-none-eabi-g++ -o "origarm_actuator.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\40207\OneDrive\OneDriveDocumentation\STM32CubeIDEWorkSpaceOnedrive\origarm_actuator\STM32F103CBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="origarm_actuator.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -80,13 +80,13 @@ default.size.stdout: $(EXECUTABLES)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-actuatoMod.list: $(EXECUTABLES)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "actuatoMod.list"
+origarm_actuator.list: $(EXECUTABLES)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "origarm_actuator.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-actuatoMod.bin: $(EXECUTABLES)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "actuatoMod.bin"
+origarm_actuator.bin: $(EXECUTABLES)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "origarm_actuator.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 

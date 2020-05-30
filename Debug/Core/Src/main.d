@@ -46,16 +46,17 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Inc/can.h ../Core/Inc/main.h ../Core/Inc/crc.h ../Core/Inc/dma.h \
  ../Core/Inc/i2c.h ../Core/Inc/tim.h ../Core/Inc/usart.h \
  ../Core/Inc/gpio.h \
- C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/myUsartFunction.h \
- C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/sensors.h \
- C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/laser.h \
- C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/Drivers/VL6180xDriver/vl6180x_api.h \
- c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_platform.h \
- c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_def.h \
- c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_cfg.h \
- c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_types.h \
- C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/IMU_WT902.h \
- C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/messages.h
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/User/myUsartFunction.h \
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/User/sensors.h \
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/User/laser.h \
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/Drivers/VL6180xDriver/vl6180x_api.h \
+ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_platform.h \
+ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_def.h \
+ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_cfg.h \
+ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_types.h \
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/User/IMU_WT902.h \
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/User/messages.h \
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_HAL.h
 
 ../Core/Inc/main.h:
 
@@ -163,22 +164,24 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Core/Inc/gpio.h:
 
-C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/myUsartFunction.h:
+C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/User/myUsartFunction.h:
 
-C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/sensors.h:
+C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/User/sensors.h:
 
-C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/laser.h:
+C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/User/laser.h:
 
-C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/Drivers/VL6180xDriver/vl6180x_api.h:
+C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/Drivers/VL6180xDriver/vl6180x_api.h:
 
-c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_platform.h:
+c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_platform.h:
 
-c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_def.h:
+c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_def.h:
 
-c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_cfg.h:
+c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_cfg.h:
 
-c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_types.h:
+c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_types.h:
 
-C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/IMU_WT902.h:
+C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/User/IMU_WT902.h:
 
-C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/User/messages.h:
+C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/User/messages.h:
+
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_HAL.h:

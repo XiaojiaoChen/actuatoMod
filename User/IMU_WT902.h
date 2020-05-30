@@ -94,8 +94,8 @@
 #define LH2UINT16(x,y) ((uint16_t)((uint16_t)(x)|(uint16_t)((y)<<8)))
 
 uint8_t IMU_Init();
-uint8_t readIMU_Quaternions(struct QUATERNION *);
-uint8_t readIMU_QuaternionsPacked(struct QUATERNIONCOMPACT *);
+uint8_t readIMU_Quaternions(QUATERNION *);
+uint8_t readIMU_QuaternionsPacked(QUATERNIONCOMPACT *);
 
 #ifdef __cplusplus
 }

@@ -1,8 +1,8 @@
-vl6180x_i2c.c:69:5:VL6180x_WrByte	16	static
-vl6180x_i2c.c:87:5:VL6180x_WrWord	24	static
-vl6180x_i2c.c:106:5:VL6180x_WrDWord	24	static
-vl6180x_i2c.c:127:5:VL6180x_UpdateByte	24	static
-vl6180x_i2c.c:154:5:VL6180x_RdByte	24	static
-vl6180x_i2c.c:178:5:VL6180x_RdWord	24	static
-vl6180x_i2c.c:202:6:VL6180x_RdDWord	24	static
-vl6180x_i2c.c:227:6:VL6180x_RdMulti	24	static
+vl6180x_i2c.c:69:5:VL6180x_WrByte	32	static
+vl6180x_i2c.c:87:5:VL6180x_WrWord	32	static
+vl6180x_i2c.c:106:5:VL6180x_WrDWord	32	static
+vl6180x_i2c.c:127:5:VL6180x_UpdateByte	40	static
+vl6180x_i2c.c:154:5:VL6180x_RdByte	32	static
+vl6180x_i2c.c:178:5:VL6180x_RdWord	32	static
+vl6180x_i2c.c:202:6:VL6180x_RdDWord	32	static
+vl6180x_i2c.c:227:6:VL6180x_RdMulti	40	static

@@ -26,13 +26,13 @@ User/laser.o: ../User/laser.c ../User/laser.h ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
- C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/Drivers/VL6180xDriver/vl6180x_api.h \
- c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_platform.h \
- c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_def.h \
- c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_cfg.h \
- c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_types.h \
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/Drivers/VL6180xDriver/vl6180x_api.h \
+ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_platform.h \
+ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_def.h \
+ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_cfg.h \
+ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_types.h \
  ../User/kalman.h \
- C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/Drivers/CMSIS/DSP/arm_math.h \
+ C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/Drivers/CMSIS/DSP/arm_math.h \
  ../Core/Inc/i2c.h ../Core/Inc/main.h
 
 ../User/laser.h:
@@ -93,19 +93,19 @@ User/laser.o: ../User/laser.c ../User/laser.h ../Core/Inc/main.h \
 
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:
 
-C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/Drivers/VL6180xDriver/vl6180x_api.h:
+C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/Drivers/VL6180xDriver/vl6180x_api.h:
 
-c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_platform.h:
+c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_platform.h:
 
-c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_def.h:
+c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_def.h:
 
-c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_cfg.h:
+c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_cfg.h:
 
-c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\actuatomod\drivers\vl6180xdriver\vl6180x_types.h:
+c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\origarm_actuator\drivers\vl6180xdriver\vl6180x_types.h:
 
 ../User/kalman.h:
 
-C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/actuatoMod/Drivers/CMSIS/DSP/arm_math.h:
+C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/Drivers/CMSIS/DSP/arm_math.h:
 
 ../Core/Inc/i2c.h:
 

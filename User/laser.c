@@ -19,7 +19,8 @@
 volatile int IntrFired=0;
 static int32_t lastResponseTime = 0;
 static float filteredrangeFloat=0;
-//static uint16_t filteredrangeInt=0;
+int range=0;
+static uint16_t filteredrangeInt=0;
 
 VL6180x_RangeData_t RangeData;
 static VL6180xDev_t theVL6180xDev;
@@ -37,16 +38,16 @@ void initLaserPoll() {
 
 	theVL6180xDev = LASERI2CADDRESS;
 	HAL_GPIO_WritePin(LASER_D1_GPIO_Port, LASER_D1_Pin, 0);
-	HAL_Delay(7);
+	HAL_Delay(3);
 	HAL_GPIO_WritePin(LASER_D1_GPIO_Port, LASER_D1_Pin, 1);
-	HAL_Delay(7);
+	HAL_Delay(3);
 	VL6180x_InitData(theVL6180xDev);
 	VL6180x_FilterSetState(theVL6180xDev, 0); //disable filtering as not effective in continuous mode
 	VL6180x_Prepare(theVL6180xDev);     // default vl6180x init
 	VL6180x_SetupGPIO1(theVL6180xDev, CONFIG_GPIO_INTERRUPT_DISABLED,
 			INTR_POL_HIGH);
 	VL6180x_UpscaleSetScaling(theVL6180xDev, 1);
-	VL6180x_RangeSetMaxConvergenceTime(theVL6180xDev, 15);
+	VL6180x_RangeSetMaxConvergenceTime(theVL6180xDev, 20);
 	VL6180x_RangeClearInterrupt(theVL6180xDev); // make sure no interrupt is pending
 
 	laserStartSingleShot();
@@ -67,16 +68,19 @@ uint8_t laserTryRead(uint16_t *buf) {
 		//    If Range.errorStatus is 0, application knows it is a valid distance
 		//    If Range.errorStatus is not 0, application knows that reported distance is invalid so may take some decisions depending on the errorStatus
 		if (RangeData.errorStatus == DataNotReady)
+		{
 			return ret;
+		}
 		if (RangeData.errorStatus == 0) {
 			//Option 1:Original Low pass, nearly same effect as the kalman filter
-//			int  LaserAlpha=0.83*(1<<16);
-//			range =  (range*LaserAlpha +  RangeData.range_mm * ((1<<16) - LaserAlpha))>>16;
-//			filteredrange =range;
+			int  LaserAlpha=0.83*(1<<16);
+			range =  (range*LaserAlpha +  RangeData.range_mm * ((1<<16) - LaserAlpha))>>16;
+			*buf =range;
+
 
 			//Option 2:kalman filter
-			filteredrangeFloat = stepKF(ptLaserKalman, RangeData.range_mm);
-			*buf = (int) (round(filteredrangeFloat));
+//			filteredrangeFloat = stepKF(ptLaserKalman, RangeData.range_mm);
+//			*buf = (int) (round(filteredrangeFloat));
 
 			//Option 3:FIR
 //			orirange=RangeData.range_mm;
@@ -86,12 +90,18 @@ uint8_t laserTryRead(uint16_t *buf) {
 		VL6180x_RangeClearInterrupt(theVL6180xDev);
 	}
 	else {
-		printf("LaserErr i2c err"); // your code display error code
+		//printf("LaserErr i2c err"); // your code display error code
 
-				initLaserPoll();
+			//	initLaserPoll();
 	}
 	return ret;
 }
+
+
+
+
+
+
 
 
 

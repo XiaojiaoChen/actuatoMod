@@ -1,3 +1,5 @@
-IMU_WT902.c:53:9:readIMU_Quaternions	32	static
-IMU_WT902.c:58:9:readIMU_QuaternionsPacked	40	static
-IMU_WT902.c:66:9:IMU_Init	24	static
+IMU_WT902.c:25:16:IMU_WriteReg	32	static
+IMU_WT902.c:33:16:IMU_ReadReg	40	static
+IMU_WT902.c:50:9:readIMU_Quaternions	16	static
+IMU_WT902.c:55:9:readIMU_QuaternionsPacked	24	static
+IMU_WT902.c:63:9:IMU_Init	16	static

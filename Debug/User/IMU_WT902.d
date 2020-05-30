@@ -27,7 +27,8 @@ User/IMU_WT902.o: ../User/IMU_WT902.c \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
  ../Core/Inc/main.h ../User/IMU_WT902.h ../User/messages.h \
- ../Core/Inc/i2c.h ../Core/Inc/main.h
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_HAL.h ../Core/Inc/i2c.h \
+ ../Core/Inc/main.h
 
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 
@@ -88,6 +89,8 @@ User/IMU_WT902.o: ../User/IMU_WT902.c \
 ../User/IMU_WT902.h:
 
 ../User/messages.h:
+
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_HAL.h:
 
 ../Core/Inc/i2c.h:
 

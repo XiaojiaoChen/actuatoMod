@@ -19,7 +19,7 @@
 #define UART_RX_BUF_SIZE 30
 #define COMMAND_SIZE 20
 
-#define UART_TX_BUF_NUM 10 //5->10
+#define UART_TX_BUF_NUM 20 //5->10
 
 
 typedef struct UART_DEVICE_STRUCT{
