@@ -7,13 +7,13 @@ C_SRCS += \
 ../Drivers/VL6180xDriver/vl6180x_api.c \
 ../Drivers/VL6180xDriver/vl6180x_i2c.c 
 
-OBJS += \
-./Drivers/VL6180xDriver/vl6180x_api.o \
-./Drivers/VL6180xDriver/vl6180x_i2c.o 
-
 C_DEPS += \
 ./Drivers/VL6180xDriver/vl6180x_api.d \
 ./Drivers/VL6180xDriver/vl6180x_i2c.d 
+
+OBJS += \
+./Drivers/VL6180xDriver/vl6180x_api.o \
+./Drivers/VL6180xDriver/vl6180x_i2c.o 
 
 
 # Each subdirectory must supply rules for building sources it contributes

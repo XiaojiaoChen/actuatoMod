@@ -12,15 +12,6 @@ C_SRCS += \
 ../User/myUsartFunction.c \
 ../User/sensors.c 
 
-OBJS += \
-./User/IMU_WT902.o \
-./User/Wire.o \
-./User/kalman.o \
-./User/laser.o \
-./User/messages.o \
-./User/myUsartFunction.o \
-./User/sensors.o 
-
 C_DEPS += \
 ./User/IMU_WT902.d \
 ./User/Wire.d \
@@ -29,6 +20,15 @@ C_DEPS += \
 ./User/messages.d \
 ./User/myUsartFunction.d \
 ./User/sensors.d 
+
+OBJS += \
+./User/IMU_WT902.o \
+./User/Wire.o \
+./User/kalman.o \
+./User/laser.o \
+./User/messages.o \
+./User/myUsartFunction.o \
+./User/sensors.o 
 
 
 # Each subdirectory must supply rules for building sources it contributes

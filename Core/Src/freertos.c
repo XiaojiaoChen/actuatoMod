@@ -137,7 +137,7 @@ void sensorTaskFunc(void const * argument)
 {
   /* USER CODE BEGIN sensorTaskFunc */
 	TickType_t xLastWakeTime = xTaskGetTickCount();
-	TickType_t sensorTaskPeriod = pdMS_TO_TICKS(20); //20->100
+	TickType_t sensorTaskPeriod = pdMS_TO_TICKS(40); //20->100
 
 	/* Infinite loop */
 	for (;;) {
@@ -162,7 +162,7 @@ void sendTaskFunc(void const * argument)
 {
   /* USER CODE BEGIN sendTaskFunc */
 	TickType_t xLastWakeTime = xTaskGetTickCount();
-	TickType_t sendTaskPeriod = pdMS_TO_TICKS(100); //50->200
+	TickType_t sendTaskPeriod = pdMS_TO_TICKS(200); //50->200
 	/*	extern int32_t elapTime;
 	 extern uint16_t laserDis;
 	 extern float filteredrange;
@@ -185,7 +185,7 @@ void sendTaskFunc(void const * argument)
 
 		if (RangeData.errorStatus)
 			printf("Laser err:%s\r\n", VL6180x_RangeGetStatusErrString(RangeData.errorStatus)); // your code display error code
-		printf("Time:%lu ms, CanID:%d,  Pressure: %d HPa, Distance: %d mm, Quaternion: %1.5f %1.5f %1.5f %1.5f, Active:%d %d %d, LoopTime:%ld\r\n",
+		printf("Time:%lu ms, CanID:%d, Pre: %d HPa, Dis: %d mm, Quat: %1.5f %1.5f %1.5f %1.5f\r\n",
 				HAL_GetTick(),
 				(uint16_t) (canbus.TxHeader.StdId),
 				sensorData.pressure,
@@ -193,11 +193,7 @@ void sendTaskFunc(void const * argument)
 				imuOriData[0] * 3.051757e-5,
 				imuOriData[1] * 3.051757e-5,
 				imuOriData[2] * 3.051757e-5,
-				imuOriData[3] * 3.051757e-5,
-				(sensorRet[0]==HAL_OK),
-				(sensorRet[1]==HAL_OK),
-				(sensorRet[2]==HAL_OK),
-				c2 - c1);
+				imuOriData[3] * 3.051757e-5);
 
 		//      printf("%d %d %d %d\r\n",
 		// 			  (int)((round)(RangeData.range_mm*100)),

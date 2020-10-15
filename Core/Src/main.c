@@ -105,7 +105,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start(&htim2);
   HAL_Delay(1000);
-  HAL_I2C_ErrorCallback(&hi2c2);
+  while(my_I2C_CheckError(&hi2c2)){
+	  printf("Start up I2C Error\r\n");
+	  HAL_I2C_ErrorCallback(&hi2c2);
+  }
   canConfig();
 
   /* USER CODE END 2 */

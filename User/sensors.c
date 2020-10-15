@@ -19,7 +19,7 @@
 #include "Wire.h"
 #endif
 
-#define CANBUS_ID 	18
+#define CANBUS_ID 	32
 
 #define PRESSUREI2CADDRESS    ((uint8_t)(0x28<<1))
 
@@ -53,6 +53,7 @@ float testDistance[2] = { 0, 0 };
 uint16_t laserDis;
 
 int sensorRet[3]={0,0,0};
+int sensorErr[3]={0,0,0};
 typedef uint8_t (*SENSOR_READ_FUNCS) (void);
 SENSOR_READ_FUNCS sensorReadFunc[3]={readPressure,readIMU,readLaser};
 
@@ -64,9 +65,15 @@ void tryReadSensors() {
 
 	//For any live sensor who has an i2c issure, we mark a need to recover i2c, and minus the recovery chances of the sensor
 	for(int i=0;i<3;i++){
-		if(sensorRet[i]!=HAL_OK){
-				i2cTobeCorrectted++;
+		if(sensorErr[i]<10){
+			if(sensorRet[i]!=HAL_OK){
+				sensorErr[i]++;
+			}
+			else{
+				sensorErr[i]=0;
+			}
 		}
+		i2cTobeCorrectted+=sensorErr[i];
 	}
 	//If i2c is marked to be recovered, do it.
 	if(i2cTobeCorrectted){
@@ -74,7 +81,9 @@ void tryReadSensors() {
 	}
 
 	for(int i=0;i<3;i++){
-		sensorRet[i]=sensorReadFunc[i]();
+		if(sensorErr[i]<10){
+			sensorRet[i]=sensorReadFunc[i]();
+		}
 	}
 }
 
@@ -325,27 +334,27 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c) {
 					timeout);
 
 			//3.5 still busy, may be the slave blocking. send 9 clocks and a stop.
-			if(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_RESET){
-				//repeat three times.
-				for(int i=0;i<3;i++){
-					uint8_t clockBit=0;
-					while(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_RESET && clockBit<9){
-						HAL_GPIO_WritePin(GPIOB, SCL_PIN, GPIO_PIN_RESET);
-						delay_us(500);
-						HAL_GPIO_WritePin(GPIOB, SCL_PIN, GPIO_PIN_SET);
-						delay_us(500);
-						clockBit++;
-					}
-					//generate a stop
-					HAL_GPIO_WritePin(GPIOB, SDA_PIN, GPIO_PIN_SET);
-					wait_for_gpio_state_timeout_us(GPIOB, SCL_PIN, GPIO_PIN_SET,
-										timeout);
-
-					//If successful then break the loop
-					if(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_SET)
-						break;
-				}
-			}
+//			if(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_RESET){
+//				//repeat three times.
+//				for(int i=0;i<3;i++){
+//					uint8_t clockBit=0;
+//					while(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_RESET && clockBit<9){
+//						HAL_GPIO_WritePin(GPIOB, SCL_PIN, GPIO_PIN_RESET);
+//						delay_us(500);
+//						HAL_GPIO_WritePin(GPIOB, SCL_PIN, GPIO_PIN_SET);
+//						delay_us(500);
+//						clockBit++;
+//					}
+//					//generate a stop
+//					HAL_GPIO_WritePin(GPIOB, SDA_PIN, GPIO_PIN_SET);
+//					wait_for_gpio_state_timeout_us(GPIOB, SCL_PIN, GPIO_PIN_SET,
+//										timeout);
+//
+//					//If successful then break the loop
+//					if(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_SET)
+//						break;
+//				}
+//			}
 			//I2c internal problem
 
 			// 4. Configure the SDA I/O as General Purpose Output Open-Drain, Low level (Write 0 to GPIOx_ODR).
