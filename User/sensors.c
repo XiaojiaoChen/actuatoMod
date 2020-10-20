@@ -19,7 +19,7 @@
 #include "Wire.h"
 #endif
 
-#define CANBUS_ID 	32
+#define CANBUS_ID 	7
 
 #define PRESSUREI2CADDRESS    ((uint8_t)(0x28<<1))
 
@@ -68,12 +68,13 @@ void tryReadSensors() {
 		if(sensorErr[i]<10){
 			if(sensorRet[i]!=HAL_OK){
 				sensorErr[i]++;
+				i2cTobeCorrectted+=sensorErr[i];
 			}
 			else{
 				sensorErr[i]=0;
 			}
 		}
-		i2cTobeCorrectted+=sensorErr[i];
+
 	}
 	//If i2c is marked to be recovered, do it.
 	if(i2cTobeCorrectted){
