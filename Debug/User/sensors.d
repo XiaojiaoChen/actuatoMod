@@ -10,6 +10,7 @@ User/sensors.o: ../User/sensors.c ../Core/Inc/main.h \
  ../Drivers/CMSIS/Include/cmsis_compiler.h \
  ../Drivers/CMSIS/Include/cmsis_gcc.h \
  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h \
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h \
@@ -36,6 +37,7 @@ User/sensors.o: ../User/sensors.c ../Core/Inc/main.h \
  ../User/messages.h ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_HAL.h \
  ../User/kalman.h \
  C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/Drivers/CMSIS/DSP/arm_math.h \
+ ../User/bno055_support.h ../User/bno055.h ../Core/Inc/usart.h \
  ../Core/Inc/i2c.h
 
 ../Core/Inc/main.h:
@@ -61,6 +63,8 @@ User/sensors.o: ../User/sensors.c ../Core/Inc/main.h \
 ../Drivers/CMSIS/Include/cmsis_gcc.h:
 
 ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h:
+
+../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
 
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h:
 
@@ -121,5 +125,11 @@ c:\users\40207\onedrive\onedrivedocumentation\stm32cubeideworkspaceonedrive\orig
 ../User/kalman.h:
 
 C:/Users/40207/OneDrive/OneDriveDocumentation/STM32CubeIDEWorkSpaceOnedrive/origarm_actuator/Drivers/CMSIS/DSP/arm_math.h:
+
+../User/bno055_support.h:
+
+../User/bno055.h:
+
+../Core/Inc/usart.h:
 
 ../Core/Inc/i2c.h:

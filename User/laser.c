@@ -9,7 +9,7 @@
 #include "laser.h"
 #include "kalman.h"
 #include "stdio.h"
-
+#include "usart.h"
 #if I2C_HARDWARE==1
 #include "i2c.h"
 #else
@@ -85,15 +85,15 @@ uint8_t laserTryRead(uint16_t *buf) {
 			//Option 3:FIR
 //			orirange=RangeData.range_mm;
 //			arm_fir_f32(&S, &(orirange), &(firrange), BLOCK_SIZE);
+		}else
+		{
+			char* sc=VL6180x_RangeGetStatusErrString(RangeData.errorStatus);
+			HAL_UART_Transmit(&huart1, (uint8_t *)sc, strlen(sc), 10);
 		}
 		/*  clear range interrupt source */
 		VL6180x_RangeClearInterrupt(theVL6180xDev);
 	}
-	else {
-		//printf("LaserErr i2c err"); // your code display error code
 
-			//	initLaserPoll();
-	}
 	return ret;
 }
 
@@ -194,12 +194,12 @@ void VL6180x_PollDelay(VL6180xDev_t dev) {
 /*Interface Functions to be implemented*/
 int VL6180x_I2CWrite(VL6180xDev_t addr, uint8_t *buff, uint8_t len) {
 	int ret;
-	ret = HAL_I2C_Master_Transmit(&hi2c2, addr, buff, len, 1);
+	ret = HAL_I2C_Master_Transmit(&hi2c2, addr, buff, len, 10);
 	return ret;
 }
 
 int VL6180x_I2CRead(VL6180xDev_t addr, uint8_t *buff, uint8_t len) {
 	int ret;
-	ret = HAL_I2C_Master_Receive(&hi2c2, addr, buff, len, 1);
+	ret = HAL_I2C_Master_Receive(&hi2c2, addr, buff, len, 10);
 	return ret;
 }

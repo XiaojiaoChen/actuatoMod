@@ -1,6 +1,6 @@
 laser.c:33:6:initLaserPoll	8	static
 laser.c:57:9:laserStartSingleShot	8	static
-laser.c:62:9:laserTryRead	24	static
+laser.c:62:9:laserTryRead	32	static
 laser.c:108:6:initLaserInt	8	static
 laser.c:139:9:readLaserInt	32	static
 laser.c:175:6:VL6180x_IntCallback	4	static

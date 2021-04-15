@@ -1,1 +1,1 @@
-arm_biquad_cascade_df1_q15.c:62:6:arm_biquad_cascade_df1_q15	104	static,ignoring_inline_asm
+arm_biquad_cascade_df1_q15.c:62:6:arm_biquad_cascade_df1_q15	128	static,ignoring_inline_asm

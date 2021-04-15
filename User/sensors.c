@@ -12,6 +12,9 @@
 #include "stdio.h"
 #include "kalman.h"
 #include "stdlib.h"
+#include "bno055_support.h"
+#include "usart.h"
+#include "stm32f1xx_hal.h"
 
 #if I2C_HARDWARE==1
 #include "i2c.h"
@@ -21,7 +24,8 @@
 
 #define CANBUS_ID 	7
 
-#define PRESSUREI2CADDRESS    ((uint8_t)(0x28<<1))
+//#define PRESSUREI2CADDRESS    ((uint8_t)(0x28<<1)) for Honeywell SSC pressure sensor
+#define PRESSUREI2CADDRESS    ((uint8_t)(0x60<<1))   //for NXP fxps7550d4 pressure sensor
 
 SENSORDATACOMPACT sensorData;
 SENSORDATACOMPACT sensorDataRx;
@@ -35,8 +39,7 @@ uint8_t PressureBuffer[2];
 uint16_t pressureRaw;
 uint32_t pressureGlobal;
 
-int16_t imuOriData[4];
-int16_t imuGetData[4];
+QUATERNION imuOriData;
 
 uint16_t laserDis;
 
@@ -57,14 +60,38 @@ int sensorErr[3]={0,0,0};
 typedef uint8_t (*SENSOR_READ_FUNCS) (void);
 SENSOR_READ_FUNCS sensorReadFunc[3]={readPressure,readIMU,readLaser};
 
+uint8_t initIMU(){
 
+	uint8_t ret=0;
+	ret += bno055_start();
+    u8 prev_opmode_u8 = BNO055_OPERATION_MODE_CONFIG;
+    s8 stat_s8 = BNO055_ERROR;
+	stat_s8 = bno055_get_operation_mode(&prev_opmode_u8);
+	        if (stat_s8 == BNO055_SUCCESS)
+	        {
+	            /* Check If the operation mode is configured to fusion mode */
+	            if (prev_opmode_u8 != BNO055_OPERATION_MODE_NDOF){
+	            	ret=1;
+	            }
+	        }
+	return ret;
+}
 
 void tryReadSensors() {
 
 	uint8_t i2cTobeCorrectted=0;
 
+
+
+
+	for(int i=1;i<2;i++){
+		if(sensorErr[i]<10){
+			sensorRet[i]=sensorReadFunc[i]();
+		}
+	}
+
 	//For any live sensor who has an i2c issure, we mark a need to recover i2c, and minus the recovery chances of the sensor
-	for(int i=0;i<3;i++){
+	for(int i=1;i<2;i++){
 		if(sensorErr[i]<10){
 			if(sensorRet[i]!=HAL_OK){
 				sensorErr[i]++;
@@ -76,15 +103,10 @@ void tryReadSensors() {
 		}
 
 	}
+
 	//If i2c is marked to be recovered, do it.
 	if(i2cTobeCorrectted){
 		HAL_I2C_ErrorCallback(&hi2c2);
-	}
-
-	for(int i=0;i<3;i++){
-		if(sensorErr[i]<10){
-			sensorRet[i]=sensorReadFunc[i]();
-		}
 	}
 }
 
@@ -102,31 +124,47 @@ void tryReadSensors() {
 uint8_t readPressure() {
 
 	uint8_t ret=0;
+	uint16_t mypressureOffsetLSB=28;
 #if COMPACT_VERSION_PRESSURE_HPA == 1
-	static float pressureCoef=60*6894.76f/(14745-1638)/100;
+	static float pressureCoef=10.0f/14;
 #else
-	static float pressureCoef=60*6894.76f/(14745-1638)/1000;
+	static float pressureCoef=1.0f/14;
 #endif
 
-	if ((ret = HAL_I2C_Master_Receive(&hi2c2, PRESSUREI2CADDRESS,PressureBuffer, 2, 1)) == HAL_OK) {
-		pressureRaw = (uint16_t) (((((uint16_t) PressureBuffer[0]) << 8)| PressureBuffer[1]) & 0x3FFF);
-		sensorData.pressure = (uint16_t)((pressureRaw - 1638) * pressureCoef);//absolute pressure, set to offset
+//	if ((ret = HAL_I2C_Master_Receive(&hi2c2, PRESSUREI2CADDRESS,PressureBuffer, 2, 1)) == HAL_OK) {
+//		pressureRaw = (uint16_t) (((((uint16_t) PressureBuffer[0]) << 8)| PressureBuffer[1]) & 0x3FFF);
+//		sensorData.pressure = (uint16_t)((pressureRaw - 1638) * pressureCoef);//absolute pressure, set to offset
+//
+//	}
+
+	if ((ret = HAL_I2C_Mem_Read(&hi2c2, PRESSUREI2CADDRESS,0x62,I2C_MEMADD_SIZE_8BIT, PressureBuffer,2, 1)) == HAL_OK) {
+		pressureRaw = (uint16_t) (((((uint16_t) PressureBuffer[1]) << 8)| PressureBuffer[0]));
+		sensorData.pressure = (uint16_t)((pressureRaw - 28990 + mypressureOffsetLSB) * pressureCoef);//absolute pressure, set to offset
 
 	}
-	return ret;
+		return ret;
 }
 
 /***************************     IMU Wt902			 ********************/
 /***************************                          *******************/
 uint8_t readIMU() {
+
+
+
+	char sc[50];
 	static uint32_t imuInitFlag = 0;
 	uint8_t ret;
-	if (!imuInitFlag) {
-		if ((ret = IMU_Init()) == HAL_OK)
-			imuInitFlag = 1;
-	}
-	ret = readIMU_QuaternionsPacked(&(sensorData.quaternionCom));
 
+	if((ret=bno055_read_data())==HAL_OK){
+		packQuaternion(&(bno055.data.quaternion_wxyz_16),&(sensorData.quaternionCom));
+		//memcpy(&imuOriData,&(bno055.data.quaternion_wxyz_16),sizeof(imuOriData));
+
+	}
+	else
+	{
+		sprintf(sc,"IMU i2c errcode= %d\r\n",ret);
+		HAL_UART_Transmit(&huart1, (uint8_t *)sc, strlen(sc), 10);
+	}
 	return ret;
 }
 
@@ -139,6 +177,7 @@ uint8_t readLaser(){
 /****************Laser Vl6180x*******************/
 uint8_t readLaserTo(uint16_t *buf) {
 	uint8_t ret;
+	char sc[50];
 #if LASER_MODE_POLL==1
 	static uint32_t datanotready = 0;
 	static uint32_t laserInternalErr=0;
@@ -148,8 +187,15 @@ uint8_t readLaserTo(uint16_t *buf) {
 		laserInitPollPend = 0;
 	}
 
-	ret = laserTryRead(buf);
-
+	if((ret = laserTryRead(buf))==HAL_OK){
+	}
+	else
+	{
+		//printf("LaserErr i2c err"); // your code display error code
+		sprintf(sc,"Laser i2c errcode= %d\r\n",ret);
+		HAL_UART_Transmit(&huart1, (uint8_t *)sc, strlen(sc), 10);
+			//	initLaserPoll();
+	}
 
 #else
 	static uint8_t laserInitIntPend = 1;
@@ -292,7 +338,28 @@ static void wait_for_gpio_state_timeout_us(GPIO_TypeDef *port, uint16_t pin,
 }
 
 uint8_t my_I2C_CheckError(I2C_HandleTypeDef *hi2c) {
-	if (hi2c->Instance->SR1 | hi2c->Instance->SR2)
+/*
+  *         This parameter can be one of the following values:
+  *            @arg I2C_FLAG_OVR: Overrun/Underrun flag
+  *            @arg I2C_FLAG_AF: Acknowledge failure flag
+  *            @arg I2C_FLAG_ARLO: Arbitration lost flag
+  *            @arg I2C_FLAG_BERR: Bus error flag
+  *            @arg I2C_FLAG_TXE: Data register empty flag
+  *            @arg I2C_FLAG_RXNE: Data register not empty flag
+  *            @arg I2C_FLAG_STOPF: Stop detection flag
+  *            @arg I2C_FLAG_ADD10: 10-bit header sent flag
+  *            @arg I2C_FLAG_BTF: Byte transfer finished flag
+  *            @arg I2C_FLAG_ADDR: Address sent flag
+  *                                Address matched flag
+  *            @arg I2C_FLAG_SB: Start bit flag
+  *            @arg I2C_FLAG_DUALF: Dual flag
+  *            @arg I2C_FLAG_GENCALL: General call header flag
+  *            @arg I2C_FLAG_TRA: Transmitter/Receiver flag
+  *            @arg I2C_FLAG_BUSY: Bus busy flag
+  *            @arg I2C_FLAG_MSL: Master/Slave flag
+*/
+
+	if (__HAL_I2C_GET_FLAG(hi2c, I2C_FLAG_BERR) || __HAL_I2C_GET_FLAG(hi2c, I2C_FLAG_BUSY))
 		return 1;
 	else
 		return 0;
@@ -305,7 +372,7 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c) {
 	 PB10     ------> I2C2_SCL
 	 PB11     ------> I2C2_SDA
 	 */
-	if (my_I2C_CheckError(&hi2c2)) {
+	{
 		if (hi2c == &hi2c2) {
 			uint32_t SDA_PIN = GPIO_PIN_11;
 			uint32_t SCL_PIN = GPIO_PIN_10;
@@ -335,27 +402,27 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c) {
 					timeout);
 
 			//3.5 still busy, may be the slave blocking. send 9 clocks and a stop.
-//			if(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_RESET){
-//				//repeat three times.
-//				for(int i=0;i<3;i++){
-//					uint8_t clockBit=0;
-//					while(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_RESET && clockBit<9){
-//						HAL_GPIO_WritePin(GPIOB, SCL_PIN, GPIO_PIN_RESET);
-//						delay_us(500);
-//						HAL_GPIO_WritePin(GPIOB, SCL_PIN, GPIO_PIN_SET);
-//						delay_us(500);
-//						clockBit++;
-//					}
-//					//generate a stop
-//					HAL_GPIO_WritePin(GPIOB, SDA_PIN, GPIO_PIN_SET);
-//					wait_for_gpio_state_timeout_us(GPIOB, SCL_PIN, GPIO_PIN_SET,
-//										timeout);
-//
-//					//If successful then break the loop
-//					if(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_SET)
-//						break;
-//				}
-//			}
+			if(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_RESET){
+				//repeat three times.
+				for(int i=0;i<3;i++){
+					uint8_t clockBit=0;
+					while(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_RESET && clockBit<9){
+						HAL_GPIO_WritePin(GPIOB, SCL_PIN, GPIO_PIN_RESET);
+						delay_us(500);
+						HAL_GPIO_WritePin(GPIOB, SCL_PIN, GPIO_PIN_SET);
+						delay_us(500);
+						clockBit++;
+					}
+					//generate a stop
+					HAL_GPIO_WritePin(GPIOB, SDA_PIN, GPIO_PIN_SET);
+					wait_for_gpio_state_timeout_us(GPIOB, SCL_PIN, GPIO_PIN_SET,
+										timeout);
+
+					//If successful then break the loop
+					if(HAL_GPIO_ReadPin(GPIOB, SDA_PIN)== GPIO_PIN_SET)
+						break;
+				}
+			}
 			//I2c internal problem
 
 			// 4. Configure the SDA I/O as General Purpose Output Open-Drain, Low level (Write 0 to GPIOx_ODR).
@@ -408,7 +475,8 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c) {
 			MX_I2C2_Init();
 
 
-			printf("I2c recovered\r\n");
+			char* sc="I2c recovery tried\r\n";
+			HAL_UART_Transmit(&huart1, (uint8_t *)sc, strlen(sc), 10);
 		}
 	}
 }

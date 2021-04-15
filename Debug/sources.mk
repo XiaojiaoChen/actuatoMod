@@ -1,5 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
+# Toolchain: GNU Tools for STM32 (9-2020-q2-update)
 ################################################################################
 
 ELF_SRCS := 
@@ -19,6 +20,7 @@ S_DEPS :=
 C_DEPS := 
 OBJCOPY_BIN := 
 CC_DEPS := 
+OBJCOPY_HEX := 
 SIZE_OUTPUT := 
 C++_DEPS := 
 EXECUTABLES := 

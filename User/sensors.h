@@ -31,8 +31,6 @@
  extern CANBUS_HANDLE canbus;
  extern SENSORDATACOMPACT sensorData;
  extern SENSORDATACOMPACT sensorDataRx;
- extern int16_t imuOriData[];
-extern int16_t imuGetData[];
 
 
 extern uint32_t ADCBuffer;
@@ -45,6 +43,7 @@ uint8_t readLaser();
 uint8_t readLaserTo(uint16_t *);
 void pressureADReadCallback();
 void canSend();
+uint8_t initIMU();
 uint8_t my_I2C_CheckError(I2C_HandleTypeDef *hi2c);
 #ifdef __cplusplus
 }

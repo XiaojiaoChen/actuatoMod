@@ -27,6 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "myUsartFunction.h"
+
 #include "sensors.h"
 #include "math.h"
 int32_t sensorTime = 0;
@@ -162,7 +163,7 @@ void sendTaskFunc(void const * argument)
 {
   /* USER CODE BEGIN sendTaskFunc */
 	TickType_t xLastWakeTime = xTaskGetTickCount();
-	TickType_t sendTaskPeriod = pdMS_TO_TICKS(200); //50->200
+	TickType_t sendTaskPeriod = pdMS_TO_TICKS(50); //50->200
 	/*	extern int32_t elapTime;
 	 extern uint16_t laserDis;
 	 extern float filteredrange;
@@ -170,10 +171,14 @@ void sendTaskFunc(void const * argument)
 	 extern float firrange;*/
 	 uint16_t senDis=0;
 	 extern int sensorRet[];
+	 extern int sensorErr[];
+	 QUATERNION quaternionPackAndUnpacked;
+	 extern QUATERNION imuOriData;
+	 extern uint16_t pressureRaw;
 	/* Infinite loop */
 	for (;;) {
 	//	unpackQuaternion(&(sensorDataRx.quaternionCom), (QUATERNION*) imuGetData);
-		unpackQuaternion(&(sensorData.quaternionCom), (QUATERNION*) imuOriData);
+		unpackQuaternion(&(sensorData.quaternionCom), &quaternionPackAndUnpacked);
 #if COMPACT_VERSION_PRESSURE_HPA == 1
 		senDis= ((uint16_t)((uint16_t)(sensorData.distance)<<3)
 				+(uint16_t)((uint16_t)(sensorData.quaternionCom.distanceBit2)<<2)
@@ -183,18 +188,24 @@ void sendTaskFunc(void const * argument)
 		senDis=sensorData.distance;
 #endif
 
-		if (RangeData.errorStatus)
-			printf("Laser err:%s\r\n", VL6180x_RangeGetStatusErrString(RangeData.errorStatus)); // your code display error code
-		printf("Time:%lu ms, CanID:%d, Pre: %d HPa, Dis: %d mm, Quat: %1.5f %1.5f %1.5f %1.5f\r\n",
+				printf("Time:%lu ms, CanID:%d, Pre:%d HPa, Dis: %d mm, Quat: %1.5f %1.5f %1.5f %1.5f  %1.5f %1.5f %1.5f %1.5f , Status:%d %d %d\r\n",
 				HAL_GetTick(),
 				(uint16_t) (canbus.TxHeader.StdId),
 				sensorData.pressure,
 				senDis,
-				imuOriData[0] * 3.051757e-5,
-				imuOriData[1] * 3.051757e-5,
-				imuOriData[2] * 3.051757e-5,
-				imuOriData[3] * 3.051757e-5);
+				quaternionPackAndUnpacked.imuData[0]* 3.051757e-5,
+				imuOriData.imuData[0] * 3.051757e-5,
+				quaternionPackAndUnpacked.imuData[1] * 3.051757e-5,
+				imuOriData.imuData[1] * 3.051757e-5,
+				quaternionPackAndUnpacked.imuData[2] * 3.051757e-5,
+				imuOriData.imuData[2] * 3.051757e-5,
+				quaternionPackAndUnpacked.imuData[3] * 3.051757e-5,
+				imuOriData.imuData[3] * 3.051757e-5,
+				sensorErr[0],
+				sensorErr[1],
+				sensorErr[2]
 
+				);
 		//      printf("%d %d %d %d\r\n",
 		// 			  (int)((round)(RangeData.range_mm*100)),
 		//			  sensorData.distance,

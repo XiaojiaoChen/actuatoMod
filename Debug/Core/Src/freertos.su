@@ -1,4 +1,4 @@
-freertos.c:80:6:vApplicationGetIdleTaskMemory	24	static
-freertos.c:93:6:MX_FREERTOS_Init	72	static
-freertos.c:136:6:sensorTaskFunc	24	static
-freertos.c:161:6:sendTaskFunc	120	static
+freertos.c:81:6:vApplicationGetIdleTaskMemory	24	static
+freertos.c:94:6:MX_FREERTOS_Init	72	static
+freertos.c:137:6:sensorTaskFunc	24	static
+freertos.c:162:6:sendTaskFunc	208	static

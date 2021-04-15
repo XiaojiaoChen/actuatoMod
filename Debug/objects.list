@@ -315,6 +315,8 @@
 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3/port.o"
 "User/IMU_WT902.o"
 "User/Wire.o"
+"User/bno055.o"
+"User/bno055_support.o"
 "User/kalman.o"
 "User/laser.o"
 "User/messages.o"
