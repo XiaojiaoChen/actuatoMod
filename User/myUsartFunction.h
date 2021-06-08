@@ -15,9 +15,9 @@
 
 #include "stm32f1xx_hal.h"
 #include "stdio.h"
-#define UART_TX_BUF_SIZE 150 //150->120
+#define UART_TX_BUF_SIZE 200 //150->120
 #define UART_RX_BUF_SIZE 30
-#define COMMAND_SIZE 20
+#define COMMAND_SIZE 10
 
 #define UART_TX_BUF_NUM 20 //5->10
 

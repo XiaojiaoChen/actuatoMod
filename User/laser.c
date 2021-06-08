@@ -85,10 +85,6 @@ uint8_t laserTryRead(uint16_t *buf) {
 			//Option 3:FIR
 //			orirange=RangeData.range_mm;
 //			arm_fir_f32(&S, &(orirange), &(firrange), BLOCK_SIZE);
-		}else
-		{
-			char* sc=VL6180x_RangeGetStatusErrString(RangeData.errorStatus);
-			HAL_UART_Transmit(&huart1, (uint8_t *)sc, strlen(sc), 10);
 		}
 		/*  clear range interrupt source */
 		VL6180x_RangeClearInterrupt(theVL6180xDev);

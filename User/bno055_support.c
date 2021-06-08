@@ -19,7 +19,7 @@ s32 bno055_start(void)
 	bno055.dev.bus_write = BNO055_I2C_bus_write;
 	bno055.dev.bus_read = BNO055_I2C_bus_read;
 	bno055.dev.delay_msec = BNO055_delay_msek;
-	bno055.dev.dev_addr = BNO055_I2C_ADDR2;
+	bno055.dev.dev_addr = BNO055_I2C_ADDR1;
 
     comres = bno055_init(&(bno055.dev));
     comres += bno055_set_power_mode(BNO055_POWER_MODE_NORMAL);

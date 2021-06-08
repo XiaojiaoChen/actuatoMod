@@ -22,7 +22,7 @@
 #include "Wire.h"
 #endif
 
-#define CANBUS_ID 	7
+#define CANBUS_ID 	40
 
 //#define PRESSUREI2CADDRESS    ((uint8_t)(0x28<<1)) for Honeywell SSC pressure sensor
 #define PRESSUREI2CADDRESS    ((uint8_t)(0x60<<1))   //for NXP fxps7550d4 pressure sensor
@@ -84,14 +84,14 @@ void tryReadSensors() {
 
 
 
-	for(int i=1;i<2;i++){
+	for(int i=0;i<3;i++){
 		if(sensorErr[i]<10){
 			sensorRet[i]=sensorReadFunc[i]();
 		}
 	}
 
 	//For any live sensor who has an i2c issure, we mark a need to recover i2c, and minus the recovery chances of the sensor
-	for(int i=1;i<2;i++){
+	for(int i=0;i<3;i++){
 		if(sensorErr[i]<10){
 			if(sensorRet[i]!=HAL_OK){
 				sensorErr[i]++;
@@ -157,13 +157,8 @@ uint8_t readIMU() {
 
 	if((ret=bno055_read_data())==HAL_OK){
 		packQuaternion(&(bno055.data.quaternion_wxyz_16),&(sensorData.quaternionCom));
-		//memcpy(&imuOriData,&(bno055.data.quaternion_wxyz_16),sizeof(imuOriData));
+		memcpy(&imuOriData,&(bno055.data.quaternion_wxyz_16),sizeof(imuOriData));
 
-	}
-	else
-	{
-		sprintf(sc,"IMU i2c errcode= %d\r\n",ret);
-		HAL_UART_Transmit(&huart1, (uint8_t *)sc, strlen(sc), 10);
 	}
 	return ret;
 }
@@ -187,15 +182,7 @@ uint8_t readLaserTo(uint16_t *buf) {
 		laserInitPollPend = 0;
 	}
 
-	if((ret = laserTryRead(buf))==HAL_OK){
-	}
-	else
-	{
-		//printf("LaserErr i2c err"); // your code display error code
-		sprintf(sc,"Laser i2c errcode= %d\r\n",ret);
-		HAL_UART_Transmit(&huart1, (uint8_t *)sc, strlen(sc), 10);
-			//	initLaserPoll();
-	}
+	ret = laserTryRead(buf);
 
 #else
 	static uint8_t laserInitIntPend = 1;
@@ -218,19 +205,22 @@ uint8_t readLaserTo(uint16_t *buf) {
 	sensorData.distance = *buf;
 #endif
 
-	if (RangeData.errorStatus == NoError) {
-		laserStartSingleShot();
-	} else if(RangeData.errorStatus <=5){
-		if (laserInternalErr++ > 50) {
-			laserInitPollPend=1;
-			laserInternalErr=0;
-		}
-	} else if(RangeData.errorStatus ==DataNotReady){
-		if (datanotready++ > 50) {
-			laserInitPollPend=1;
-			datanotready=0;
-		}
-	}
+//	if (RangeData.errorStatus == NoError) {
+//		laserStartSingleShot();
+//	} else if(RangeData.errorStatus <=5){
+//		if (laserInternalErr++ > 50) {
+//			//laserInitPollPend=1;
+//
+//			laserInternalErr=0;
+//		}
+//	}
+//	else if(RangeData.errorStatus ==DataNotReady){
+//		if (datanotready++ > 50) {
+//			laserInitPollPend=1;
+//			datanotready=0;
+//		}
+//	}
+	laserStartSingleShot();
 	return ret;
 }
 
@@ -475,8 +465,8 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c) {
 			MX_I2C2_Init();
 
 
-			char* sc="I2c recovery tried\r\n";
-			HAL_UART_Transmit(&huart1, (uint8_t *)sc, strlen(sc), 10);
+			//char* sc="I2c recovery tried\r\n";
+			//HAL_UART_Transmit(&huart1, (uint8_t *)sc, strlen(sc), 10);
 		}
 	}
 }

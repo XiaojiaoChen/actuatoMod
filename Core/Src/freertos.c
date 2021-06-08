@@ -27,7 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "myUsartFunction.h"
-
+#include "laser.h"
 #include "sensors.h"
 #include "math.h"
 int32_t sensorTime = 0;
@@ -163,7 +163,7 @@ void sendTaskFunc(void const * argument)
 {
   /* USER CODE BEGIN sendTaskFunc */
 	TickType_t xLastWakeTime = xTaskGetTickCount();
-	TickType_t sendTaskPeriod = pdMS_TO_TICKS(50); //50->200
+	TickType_t sendTaskPeriod = pdMS_TO_TICKS(200); //50->200
 	/*	extern int32_t elapTime;
 	 extern uint16_t laserDis;
 	 extern float filteredrange;
@@ -177,6 +177,11 @@ void sendTaskFunc(void const * argument)
 	 extern uint16_t pressureRaw;
 	/* Infinite loop */
 	for (;;) {
+		if(RangeData.errorStatus!=0){
+			char *laserErrStr=VL6180x_RangeGetStatusErrString(RangeData.errorStatus);
+			printf("%s\r\n",laserErrStr);
+		}
+
 	//	unpackQuaternion(&(sensorDataRx.quaternionCom), (QUATERNION*) imuGetData);
 		unpackQuaternion(&(sensorData.quaternionCom), &quaternionPackAndUnpacked);
 #if COMPACT_VERSION_PRESSURE_HPA == 1
@@ -188,30 +193,33 @@ void sendTaskFunc(void const * argument)
 		senDis=sensorData.distance;
 #endif
 
-				printf("Time:%lu ms, CanID:%d, Pre:%d HPa, Dis: %d mm, Quat: %1.5f %1.5f %1.5f %1.5f  %1.5f %1.5f %1.5f %1.5f , Status:%d %d %d\r\n",
+				printf("Time:%lu ms, CanID:%d, Pre:%d HPa, Dis: %d mm, QuatOri: %1.5f %1.5f %1.5f %1.5f  QuatCom:%1.5f %1.5f %1.5f %1.5f , Status:%d %d %d\r\n",
 				HAL_GetTick(),
 				(uint16_t) (canbus.TxHeader.StdId),
 				sensorData.pressure,
 				senDis,
-				quaternionPackAndUnpacked.imuData[0]* 3.051757e-5,
 				imuOriData.imuData[0] * 3.051757e-5,
-				quaternionPackAndUnpacked.imuData[1] * 3.051757e-5,
 				imuOriData.imuData[1] * 3.051757e-5,
-				quaternionPackAndUnpacked.imuData[2] * 3.051757e-5,
 				imuOriData.imuData[2] * 3.051757e-5,
-				quaternionPackAndUnpacked.imuData[3] * 3.051757e-5,
 				imuOriData.imuData[3] * 3.051757e-5,
-				sensorErr[0],
-				sensorErr[1],
-				sensorErr[2]
-
+				quaternionPackAndUnpacked.imuData[0]* 3.051757e-5,
+				quaternionPackAndUnpacked.imuData[1] * 3.051757e-5,
+				quaternionPackAndUnpacked.imuData[2] * 3.051757e-5,
+				quaternionPackAndUnpacked.imuData[3] * 3.051757e-5,
+				sensorRet[0],
+				sensorRet[1],
+				sensorRet[2]
 				);
-		//      printf("%d %d %d %d\r\n",
-		// 			  (int)((round)(RangeData.range_mm*100)),
-		//			  sensorData.distance,
-		//			  (int)((round)(filteredrange))*100,
-		//			  (int)((round)(testDistance[1]*100))
-		// 			  );
+//		printf("Time:%lu ms, CanID:%d, Pre:%d HPa\r\n",
+//				HAL_GetTick(),
+//				(uint16_t) (canbus.TxHeader.StdId),
+//				sensorData.pressure);
+//		      printf("%d %d %d %d\r\n",
+//		 			  (int)((round)(RangeData.range_mm*100)),
+//					  sensorData.distance,
+//					  (int)((round)(filteredrange))*100,
+//					  (int)((round)(testDistance[1]*100))
+//		 			  );
 		vTaskDelayUntil(&xLastWakeTime, sendTaskPeriod);
 	}
   /* USER CODE END sendTaskFunc */
